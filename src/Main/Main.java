@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import static Main.Algorithms.*;
 public class Main {
 
-    private static void zad4_1() throws IOException {
+    private static Points getPoints(int range) throws IOException {
         ArrayList<Point> points = new ArrayList<>();
         ArrayList<String> coords = readFileArrString(new File("punkty.txt"));
-        for(String s : coords) {
-            points.add(new Point(Integer.parseInt(s.split(" ")[0]), Integer.parseInt(s.split(" ")[1])));
+        for(int i = 0; i < range; i++) {
+            points.add(new Point(Integer.parseInt(coords.get(i).split(" ")[0]), Integer.parseInt(coords.get(i).split(" ")[1])));
         }
 
         int radius = 200;
@@ -22,7 +22,6 @@ public class Main {
         ArrayList<Point> pointsOn = new ArrayList<>();
         for(Point point : points) {
             double distance = Math.sqrt((Math.pow(point.x - 200, 2)) + (Math.pow(point.y - 200, 2)));
-//            System.out.println(formula);
             if(distance < radius) {
                 in++;
             } else if(distance == radius) {
@@ -32,12 +31,38 @@ public class Main {
                 out++;
             }
         }
-        System.out.println("W okręgu\t" + in + "\nNa okręgu\t" + on + "\nPo za okręgiem\t" + out);
+        return new Points(pointsOn, in, on, out, points);
+    }
+
+    private static void zad4_1() throws IOException {
+        Points points = getPoints(10000);
+
+        System.out.println("W okręgu\t" + points.getInner() + "\nNa okręgu\t" + points.getOn() + "\nPo za okręgiem\t" + points.getOuter());
         System.out.println("Współrzędne punktów na okręgu:");
-        for(Point p : pointsOn)
+        for(Point p : points.getPointsOnCircle())
             System.out.print("(" + p.x + ", " + p.y + "), ");
     }
+
+    private static double getPIRound(int range) throws IOException {
+        Points points = getPoints(range);
+        return (((double) points.getInner() + (double) points.getOn()) / (double) range) / 0.25;
+    }
+
+    private static void zad4_2() throws IOException {
+        System.out.println(getPIRound(1000));
+        System.out.println(getPIRound(5000));
+        System.out.println(getPIRound(10000));
+    }
+
+    private static void zad4_3() throws IOException {
+        Points points = getPoints(1700);
+        double piRound = getPIRound(1700);
+        for(int i = 0; i < points.getAllPoints().size(); i++) {
+//            int epsilonPi = Math.PI - piRound;
+        }
+    }
+
     public static void main(String[] args) throws IOException {
-        zad4_1();
+        zad4_2();
     }
 }
