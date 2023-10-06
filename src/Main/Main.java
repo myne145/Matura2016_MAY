@@ -56,13 +56,14 @@ public class Main {
 
     private static void zad4_3() throws IOException {
         Points points = getPoints(1700);
-        double piRound = getPIRound(1700);
         for(int i = 0; i < points.getAllPoints().size(); i++) {
-//            int epsilonPi = Math.PI - piRound;
+            double piRound = getPIRound(i + 1);
+            double epsilonPi = Math.abs(Math.PI - piRound);
+            System.out.println(i+1 + "\t" + epsilonPi);
         }
     }
 
     public static void main(String[] args) throws IOException {
-        zad4_2();
+        zad4_3();
     }
 }
